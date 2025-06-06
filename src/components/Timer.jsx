@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 const Timer = ({ initialMinutes = 5, onExpire }) => {
   const [timeLeft, setTimeLeft] = useState(initialMinutes * 60) // Convert to seconds
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState(true)
   const [isExpired, setIsExpired] = useState(false)
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Timer = ({ initialMinutes = 5, onExpire }) => {
 
   const resetTimer = () => {
     setTimeLeft(initialMinutes * 60)
-    setIsActive(false)
+    setIsActive(true)
     setIsExpired(false)
   }
 
@@ -59,14 +59,14 @@ const Timer = ({ initialMinutes = 5, onExpire }) => {
 
   return (
     <div className={getTimerClass()}>
-      <h2>Form Timer</h2>
+      <h2>Time Remaining</h2>
       <div className="timer-display">
         {formatTime(timeLeft)}
       </div>
       <div className="timer-controls">
-        {!isActive && !isExpired && (
+        {!isActive && !isExpired && timeLeft > 0 && (
           <button onClick={startTimer} className="start-btn">
-            Start Timer
+            Resume Timer
           </button>
         )}
         {isActive && (
@@ -75,7 +75,7 @@ const Timer = ({ initialMinutes = 5, onExpire }) => {
           </button>
         )}
         <button onClick={resetTimer} className="reset-btn">
-          Reset
+          Reset ({initialMinutes}m)
         </button>
       </div>
       {isExpired && (

@@ -1,0 +1,131 @@
+.layout-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas: 
+    "main main main main main main main main main sidebar sidebar sidebar";
+  gap: 20px;
+  min-height: 400px;
+}
+
+.layout-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-main {
+  grid-area: main;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.layout-sidebar {
+  grid-area: sidebar;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Additional grid items for more than 2 children */
+.layout-item-3 {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+}
+
+.layout-item-4,
+.layout-item-5,
+.layout-item-6 {
+  grid-column: span 4;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .layout-grid {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-areas: 
+      "main main main main main main sidebar sidebar";
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-container {
+    padding: 15px;
+  }
+  
+  .layout-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "main"
+      "sidebar";
+    gap: 15px;
+  }
+  
+  .layout-main,
+  .layout-sidebar {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-container {
+    padding: 10px;
+  }
+  
+  .layout-grid {
+    gap: 10px;
+  }
+  
+  .layout-main,
+  .layout-sidebar {
+    padding: 12px;
+  }
+}
+
+/* Utility classes for custom layouts */
+.layout-reverse .layout-grid {
+  grid-template-areas: 
+    "sidebar sidebar sidebar main main main main main main main main main";
+}
+
+.layout-equal .layout-grid {
+  grid-template-areas: 
+    "main main main main main main sidebar sidebar sidebar sidebar sidebar sidebar";
+}
+
+.layout-narrow-sidebar .layout-grid {
+  grid-template-areas: 
+    "main main main main main main main main main main sidebar sidebar";
+}
+
+.layout-wide-sidebar .layout-grid {
+  grid-template-areas: 
+    "main main main main main main main main sidebar sidebar sidebar sidebar";
+}
+
+/* Content styling helpers */
+.layout-main-content,
+.layout-sidebar {
+  height: 100%;
+}
+
+.layout-main-content > *:first-child {
+  margin-top: 0;
+}
+
+.layout-main-content > *:last-child {
+  margin-bottom: 0;
+}

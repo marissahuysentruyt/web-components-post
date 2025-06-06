@@ -1,20 +1,29 @@
 import React from 'react'
+import Layout from './components/Layout'
+import Form from './components/Form'
 import Timer from './components/Timer'
 import './App.css'
 
 function App() {
+  const handleTimerExpire = () => {
+    alert('Form session expired! Please start over.')
+    // You could add additional logic here like:
+    // - Reset form data
+    // - Show a modal
+    // - Redirect to a different page
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>React Timer Demo</h1>
-        <p>A countdown timer to demonstrate form time limits</p>
+    <div className='App'>
+      <header className='App-header'>
+        <h1>React Form with Timer Demo</h1>
+        <p>Complete the form before time runs out!</p>
       </header>
-      <main>
-        <Timer 
-          initialMinutes={5} 
-          onExpire={() => alert('Form session expired! Please start over.')} 
-        />
-      </main>
+
+      <Layout>
+        <Form />
+        <Timer initialMinutes={15} onExpire={handleTimerExpire} />
+      </Layout>
     </div>
   )
 }

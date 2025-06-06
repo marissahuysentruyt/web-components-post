@@ -18,11 +18,15 @@ function App() {
       <header className='App-header'>
         <h1>React Form with Timer Demo</h1>
         <p>Complete the form before time runs out!</p>
+        <nav className="demo-nav">
+          <a href="/" className="demo-link current">Full React Implementation</a>
+          <a href="/react-progressive.html" className="demo-link">React Progressive Enhancement</a>
+        </nav>
       </header>
 
       <Layout>
         <Form />
-        <Timer initialMinutes={15} onExpire={handleTimerExpire} />
+        <Timer initialMinutes={10} onExpire={handleTimerExpire} />
       </Layout>
     </div>
   )

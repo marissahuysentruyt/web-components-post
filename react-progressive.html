@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Progressive Enhancement React Demo</title>
+    <meta name="description" content="A demonstration of progressive enhancement using React with fallbacks" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .app-header {
+        background-color: #282c34;
+        padding: 20px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .app-header h1 {
+        margin: 0 0 10px 0;
+        font-size: 2.5rem;
+        font-weight: 700;
+      }
+
+      .app-header p {
+        margin: 0 0 15px 0;
+        font-size: 1.1rem;
+        opacity: 0.9;
+        font-weight: 300;
+      }
+
+      .demo-nav {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .demo-link {
+        padding: 8px 16px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        transition: background-color 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .demo-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .demo-link.current {
+        background-color: #007acc;
+        border-color: #007acc;
+      }
+
+      .app-main {
+        flex: 1;
+        padding: 20px 0;
+      }
+
+      /* Base layout styles - work without JavaScript */
+      .layout {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 20px;
+        min-height: 400px;
+      }
+
+      .main-content {
+        grid-column: span 9;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+      }
+
+      .sidebar {
+        grid-column: span 3;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+      }
+
+      /* Form styles - work without JavaScript */
+      .contact-form h2 {
+        margin: 0 0 10px 0;
+        color: #333;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #007acc;
+        padding-bottom: 10px;
+      }
+
+      .form-description {
+        margin: 0 0 25px 0;
+        color: #666;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.95rem;
+        margin-bottom: 5px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #007acc;
+        box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+      }
+
+      .form-group input.error,
+      .form-group textarea.error {
+        border-color: #d32f2f;
+        box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .error-message {
+        color: #d32f2f;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 2px;
+        display: none;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #007acc;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-width: 120px;
+      }
+
+      .btn-primary {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #45a049;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+      }
+
+      .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: #5a6268;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+      }
+
+      /* Timer styles - work without JavaScript */
+      .timer {
+        text-align: center;
+      }
+
+      .timer h2 {
+        margin: 0 0 20px 0;
+        color: #333;
+        font-size: 1.5rem;
+      }
+
+      .timer-display {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #007acc;
+        font-family: 'Courier New', monospace;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .timer-info {
+        background-color: #e3f2fd;
+        border: 1px solid #2196f3;
+        border-radius: 6px;
+        padding: 15px;
+        margin-top: 15px;
+        color: #1976d2;
+        font-size: 0.9rem;
+      }
+
+      .loading-notice {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 6px;
+        padding: 15px;
+        margin: 20px;
+        color: #856404;
+        text-align: center;
+      }
+
+      /* Responsive design */
+      @media (max-width: 1024px) {
+        .layout {
+          grid-template-columns: repeat(8, 1fr);
+        }
+        .main-content {
+          grid-column: span 6;
+        }
+        .sidebar {
+          grid-column: span 2;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+        .main-content,
+        .sidebar {
+          grid-column: span 1;
+        }
+        .app-header {
+          padding: 15px;
+        }
+        .app-header h1 {
+          font-size: 2rem;
+        }
+        .app-main {
+          padding: 15px 0;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .layout {
+          padding: 10px;
+          gap: 10px;
+        }
+        .form-actions {
+          flex-direction: column;
+        }
+        .btn {
+          width: 100%;
+        }
+      }
+
+      /* React enhancement states */
+      .react-loading {
+        display: block;
+      }
+
+      .react-loaded .react-loading {
+        display: none;
+      }
+
+      .react-error {
+        display: none;
+      }
+
+      .react-failed .react-error {
+        display: block;
+      }
+
+      .react-failed .react-loading {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <h1>Progressive React Demo</h1>
+        <p>This form works with or without React!</p>
+        <nav class="demo-nav">
+          <a href="index.html" class="demo-link">Full React Implementation</a>
+          <a href="react-progressive.html" class="demo-link current">React Progressive Enhancement</a>
+        </nav>
+      </header>
+      
+      <main class="app-main">
+        <!-- Loading notice - shown while React loads -->
+        <div class="loading-notice react-loading">
+          🔄 Loading React components... The form below works even if this fails to load.
+        </div>
+
+        <!-- Error notice - shown if React fails -->
+        <div class="loading-notice react-error">
+          ⚠️ React failed to load, but the form still works! This demonstrates graceful degradation.
+        </div>
+
+        <!-- React will hydrate this content -->
+        <div id="root">
+          <div class="layout">
+            <!-- Main content area - Server-rendered HTML -->
+            <div class="main-content">
+              <form class="contact-form" action="/submit" method="POST">
+                <h2>Contact Form</h2>
+                <p class="form-description">
+                  Please fill out this form completely. This form works with standard HTML5 validation, 
+                  and will be enhanced with React when available.
+                </p>
+                
+                <div class="form-group">
+                  <label for="name">Full Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Enter your full name"
+                  />
+                  <div class="error-message" id="name-error"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="your.email@example.com"
+                  />
+                  <div class="error-message" id="email-error"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone Number *</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    placeholder="(555) 123-4567"
+                  />
+                  <div class="error-message" id="phone-error"></div>
+                </div>
+
+                <div class="form-group">
+                  <label for="priority">Priority Level</label>
+                  <select id="priority" name="priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="message">Message *</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    placeholder="Please describe your inquiry in detail..."
+                    rows="4"
+                  ></textarea>
+                  <div class="error-message" id="message-error"></div>
+                </div>
+
+                <div class="form-group">
+                  <div class="checkbox-group">
+                    <input type="checkbox" id="subscribe" name="subscribe" />
+                    <label for="subscribe">Subscribe to newsletter updates</label>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">
+                    Submit Form
+                  </button>
+                  <button type="reset" class="btn btn-secondary">
+                    Clear Form
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Sidebar area - Server-rendered HTML -->
+            <div class="sidebar">
+              <div class="timer">
+                <h2>Time Remaining</h2>
+                <div class="timer-display" id="timer-display">
+                  15:00
+                </div>
+                <div class="timer-info">
+                  <p id="timer-status">⏰ Timer will start when React loads. Form works without it!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Fallback JavaScript for basic enhancement -->
+    <script>
+      // Basic timer functionality without React
+      function initBasicTimer() {
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        const display = document.getElementById('timer-display');
+        const status = document.getElementById('timer-status');
+        
+        if (!display || !status) return;
+        
+        status.textContent = '⏰ Basic timer active (no React needed)';
+        
+        const interval = setInterval(() => {
+          const mins = Math.floor(timeLeft / 60);
+          const secs = timeLeft % 60;
+          display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+          
+          if (timeLeft <= 0) {
+            clearInterval(interval);
+            display.textContent = '00:00';
+            display.style.color = '#d32f2f';
+            status.textContent = '⚠️ Time expired! (Basic timer)';
+            alert('Form session expired! Please start over.');
+          }
+          
+          timeLeft--;
+        }, 1000);
+      }
+
+      // Basic form validation without React
+      function initBasicValidation() {
+        const form = document.querySelector('.contact-form');
+        if (!form) return;
+
+        form.addEventListener('submit', function(e) {
+          let hasErrors = false;
+          
+          // Clear previous errors
+          document.querySelectorAll('.error-message').forEach(el => {
+            el.style.display = 'none';
+            el.textContent = '';
+          });
+          
+          // Validate required fields
+          const requiredFields = form.querySelectorAll('[required]');
+          requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+              const errorEl = document.getElementById(field.name + '-error');
+              if (errorEl) {
+                errorEl.textContent = field.labels[0].textContent.replace(' *', '') + ' is required';
+                errorEl.style.display = 'block';
+                field.classList.add('error');
+                hasErrors = true;
+              }
+            } else {
+              field.classList.remove('error');
+            }
+          });
+          
+          // Email validation
+          const email = form.querySelector('#email');
+          if (email && email.value && !/\S+@\S+\.\S+/.test(email.value)) {
+            const errorEl = document.getElementById('email-error');
+            if (errorEl) {
+              errorEl.textContent = 'Please enter a valid email address';
+              errorEl.style.display = 'block';
+              email.classList.add('error');
+              hasErrors = true;
+            }
+          }
+          
+          if (hasErrors) {
+            e.preventDefault();
+          }
+        });
+      }
+
+      // Initialize basic functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        initBasicTimer();
+        initBasicValidation();
+        
+        // Mark as React loading
+        document.body.classList.add('react-loading');
+        
+        // Try to load React (simulated - would be real in production)
+        setTimeout(() => {
+          try {
+            // Simulate React loading success/failure
+            const shouldFail = window.location.search.includes('fail=true');
+            
+            if (shouldFail) {
+              throw new Error('Simulated React failure');
+            }
+            
+            // React loaded successfully
+            document.body.classList.remove('react-loading');
+            document.body.classList.add('react-loaded');
+            
+            // In a real app, React would hydrate the existing content here
+            console.log('✅ React loaded and hydrated successfully');
+            document.getElementById('timer-status').textContent = '⚡ Enhanced with React!';
+            
+          } catch (error) {
+            // React failed to load
+            document.body.classList.remove('react-loading');
+            document.body.classList.add('react-failed');
+            console.warn('❌ React failed to load:', error.message);
+          }
+        }, 2000); // Simulate loading time
+      });
+    </script>
+
+    <!-- In production, this would load React and your components -->
+    <!-- 
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="./build/your-react-app.js"></script>
+    -->
+  </body>
+</html>

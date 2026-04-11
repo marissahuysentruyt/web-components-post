@@ -1,10 +1,6 @@
 import { LitElement, html, css } from 'lit'
 
 class Layout extends LitElement {
-  static properties = {
-    variant: { type: String, reflect: true },
-  }
-
   static styles = css`
     :host {
       display: block;
@@ -39,36 +35,11 @@ class Layout extends LitElement {
       justify-content: flex-start;
     }
 
-    /* Layout variants */
-    :host([variant='reverse']) .layout-grid {
-      grid-template-areas: 'sidebar sidebar sidebar main main main main main main main main main';
-    }
-
-    :host([variant='equal']) .layout-grid {
-      grid-template-areas: 'main main main main main main sidebar sidebar sidebar sidebar sidebar sidebar';
-    }
-
-    :host([variant='narrow-sidebar']) .layout-grid {
-      grid-template-areas: 'main main main main main main main main main main sidebar sidebar';
-    }
-
-    :host([variant='wide-sidebar']) .layout-grid {
-      grid-template-areas: 'main main main main main main main main sidebar sidebar sidebar sidebar';
-    }
-
     /* Responsive design */
     @media (max-width: 1024px) {
       .layout-grid {
         grid-template-columns: repeat(8, 1fr);
         grid-template-areas: 'main main main main main main sidebar sidebar';
-      }
-
-      :host([variant='reverse']) .layout-grid {
-        grid-template-areas: 'sidebar sidebar main main main main main main';
-      }
-
-      :host([variant='equal']) .layout-grid {
-        grid-template-areas: 'main main main main sidebar sidebar sidebar sidebar';
       }
     }
 
@@ -83,18 +54,6 @@ class Layout extends LitElement {
           'main'
           'sidebar';
         gap: 15px;
-      }
-
-      :host([variant='reverse']) .layout-grid {
-        grid-template-areas:
-          'sidebar'
-          'main';
-      }
-
-      :host([variant='equal']) .layout-grid {
-        grid-template-areas:
-          'main'
-          'sidebar';
       }
     }
 
@@ -117,7 +76,6 @@ class Layout extends LitElement {
 
   constructor() {
     super()
-    this.variant = 'default'
   }
 
   render() {

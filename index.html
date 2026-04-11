@@ -1,127 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Web Components Form Demo</title>
-    <meta name="description" content="A demonstration of form and timer functionality built with vanilla web components" />
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Web Components Form Demo</title>
+        <meta
+            name="description"
+            content="A demonstration of form and timer functionality built with vanilla web components"
+        />
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-          sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background-color: #f5f5f5;
-        color: #333;
-        line-height: 1.6;
-      }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+                    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+                    'Helvetica Neue', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                background-color: #f5f5f5;
+                color: #333;
+                line-height: 1.6;
+            }
 
-      .app {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
+            .app {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
 
-      .app-header {
-        background-color: #282c34;
-        padding: 20px;
-        color: white;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
+            .app-header {
+                background-color: #282c34;
+                padding: 20px;
+                color: white;
+                text-align: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
 
-      .app-header h1 {
-        margin: 0 0 10px 0;
-        font-size: 2.5rem;
-        font-weight: 700;
-      }
+            .app-header h1 {
+                margin: 0 0 10px 0;
+                font-size: 2.5rem;
+                font-weight: 700;
+            }
 
-      .app-header p {
-        margin: 0 0 15px 0;
-        font-size: 1.1rem;
-        opacity: 0.9;
-        font-weight: 300;
-      }
+            .app-header p {
+                margin: 0 0 15px 0;
+                font-size: 1.1rem;
+                opacity: 0.9;
+                font-weight: 300;
+            }
 
-      .demo-nav {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
+            .demo-nav {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
 
-      .demo-link {
-        padding: 8px 16px;
-        background-color: rgba(255, 255, 255, 0.1);
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        transition: background-color 0.2s ease;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
+            .demo-link {
+                padding: 8px 16px;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+                text-decoration: none;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                transition: background-color 0.2s ease;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
 
-      .demo-link:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
+            .demo-link:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
 
-      .demo-link.current {
-        background-color: #007acc;
-        border-color: #007acc;
-      }
+            .demo-link.current {
+                background-color: #007acc;
+                border-color: #007acc;
+            }
 
-      .app-main {
-        flex: 1;
-        padding: 20px 0;
-      }
+            .app-main {
+                flex: 1;
+                padding: 20px 0;
+            }
 
-      @media (max-width: 768px) {
-        .app-header {
-          padding: 15px;
-        }
-        
-        .app-header h1 {
-          font-size: 2rem;
-        }
-        
-        .app-header p {
-          font-size: 1rem;
-        }
-        
-        .app-main {
-          padding: 15px 0;
-        }
-      }
-    </style>
-  </head>
+            @media (max-width: 768px) {
+                .app-header {
+                    padding: 15px;
+                }
 
-  <body>
-    <div class="app">
-      <header class="app-header">
-        <h1>Web Components Form Demo</h1>
-        <p>Complete the form before time runs out!</p>
-        <nav class="demo-nav">
-          <a href="index.html" class="demo-link current">Full Web Components</a>
-          <a href="progressive.html" class="demo-link">Progressive Enhancement</a>
-        </nav>
-      </header>
-      
-      <main class="app-main">
-        <layout-element>
-          <form-element slot="main"></form-element>
-          <timer-element slot="sidebar" initial-minutes="15"></timer-element>
-        </layout-element>
-      </main>
-    </div>
+                .app-header h1 {
+                    font-size: 2rem;
+                }
 
-    <script src="./js/main.mjs" type="module" charset="utf-8"></script>
-  </body>
+                .app-header p {
+                    font-size: 1rem;
+                }
+
+                .app-main {
+                    padding: 15px 0;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="app">
+            <header class="app-header">
+                <h1>Web Components Form Demo</h1>
+                <p>Complete the form before time runs out!</p>
+                <nav class="demo-nav">
+                    <a href="index.html" class="demo-link current"
+                        >Full Web Components</a
+                    >
+                    <a href="progressive.html" class="demo-link"
+                        >Progressive Enhancement</a
+                    >
+                </nav>
+            </header>
+
+            <main class="app-main">
+                <layout-element>
+                    <form-element slot="main"></form-element>
+                    <timer-element
+                        slot="sidebar"
+                        initial-minutes="15"
+                    ></timer-element>
+                </layout-element>
+            </main>
+        </div>
+
+        <script src="./js/main.js" type="module" charset="utf-8"></script>
+    </body>
 </html>

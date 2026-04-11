@@ -1,16 +1,16 @@
-import Timer from './components/timer.js'
-import Form from './components/form.js'
-import Layout from './components/layout.js'
+import { Timer } from './components/timer.js'
+import { Form } from './components/form.js'
+import { Layout } from './components/layout.js'
 
 // Register all custom elements
-customElements.define(Timer.name, Timer.element)
-customElements.define(Form.name, Form.element)
-customElements.define(Layout.name, Layout.element)
+customElements.define('timer-element', Timer)
+customElements.define('form-element', Form)
+customElements.define('layout-element', Layout)
 
 console.log('Web components registered:', {
-  timer: Timer.name,
-  form: Form.name,
-  layout: Layout.name,
+  timer: 'timer-element',
+  form: 'form-element',
+  layout: 'layout-element',
 })
 
 // Set up timer expire handler after components are registered

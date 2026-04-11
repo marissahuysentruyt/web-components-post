@@ -1,7 +1,10 @@
 import { LitElement, html, css } from 'lit'
-import { property } from 'lit/decorators.js'
 
 class Layout extends LitElement {
+  static properties = {
+    variant: { type: String, reflect: true },
+  }
+
   static styles = css`
     :host {
       display: block;
@@ -112,8 +115,10 @@ class Layout extends LitElement {
     }
   `
 
-  @property({ type: String, reflect: true })
-  variant = 'default'
+  constructor() {
+    super()
+    this.variant = 'default'
+  }
 
   render() {
     return html`
@@ -131,4 +136,4 @@ class Layout extends LitElement {
   }
 }
 
-export default { element: Layout, name: 'layout-element' }
+export { Layout }

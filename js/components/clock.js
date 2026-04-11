@@ -16,4 +16,4 @@ class Clock extends LitElement {
   }
 }
 
-export default { element: Clock, name: 'clock-element' }
+export { Clock }

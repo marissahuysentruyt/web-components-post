@@ -1,7 +1,11 @@
 import { LitElement, html, css } from 'lit'
-import { property, state } from 'lit/decorators.js'
 
 class Form extends LitElement {
+  static properties = {
+    formData: { state: true },
+    errors: { state: true },
+  }
+
   static styles = css`
     :host {
       display: block;
@@ -161,18 +165,18 @@ class Form extends LitElement {
     }
   `
 
-  @state()
-  formData = {
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-    priority: 'medium',
-    subscribe: false,
+  constructor() {
+    super()
+    this.formData = {
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+      priority: 'medium',
+      subscribe: false,
+    }
+    this.errors = {}
   }
-
-  @state()
-  errors = {}
 
   validateForm() {
     const newErrors = {}
@@ -351,4 +355,4 @@ class Form extends LitElement {
   }
 }
 
-export default { element: Form, name: 'form-element' }
+export { Form }

@@ -1,7 +1,12 @@
 import { LitElement, html, css } from 'lit'
-import { property, state } from 'lit/decorators.js'
 
 class Timer extends LitElement {
+  static properties = {
+    initialMinutes: { type: Number, attribute: 'initial-minutes' },
+    timeLeft: { state: true },
+    isActive: { state: true },
+    isExpired: { state: true },
+  }
   static styles = css`
     :host {
       display: block;
@@ -189,20 +194,15 @@ class Timer extends LitElement {
     }
   `
 
-  @property({ type: Number, attribute: 'initial-minutes' })
-  initialMinutes = 15
-
-  @state()
-  timeLeft = this.initialMinutes * 60
-
-  @state()
-  isActive = false
-
-  @state()
-  isExpired = false
-
-  interval = null
-  onExpire = null
+  constructor() {
+    super()
+    this.initialMinutes = 15
+    this.timeLeft = 0
+    this.isActive = false
+    this.isExpired = false
+    this.interval = null
+    this.onExpire = null
+  }
 
   connectedCallback() {
     super.connectedCallback()
@@ -327,4 +327,4 @@ class Timer extends LitElement {
   }
 }
 
-export default { element: Timer, name: 'timer-element' }
+export { Timer }

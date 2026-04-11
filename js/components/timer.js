@@ -196,7 +196,7 @@ class Timer extends LitElement {
 
   constructor() {
     super()
-    this.initialMinutes = 15
+    this.initialMinutes = 5
     this.timeLeft = 0
     this.isActive = false
     this.isExpired = false
